@@ -1,5 +1,5 @@
 import './App.css';
-
+import PostAnswer from './PostAnswer.js';
 import { useState, useEffect } from 'react';
 
 function App() {
@@ -29,11 +29,11 @@ function App() {
     }
   }
 
-        
+
   const postAnswer = async (answer) => {
     if (!cocktail) return;
     try {
-      if (answer.toLowerCase() === cocktail.cocktailName.toLowerCase()) {
+      if (answer.toLowerCase() === cocktail.strDrink.toLowerCase()) {
         if (player.currentRound + 1 <= 50) {
           const response = await fetch('http://localhost:8080/api/correct-answer', {
             method: 'POST',
@@ -92,6 +92,7 @@ function App() {
     }
   }
 
+
   useEffect(() => {
    getCocktail(); 
   }, [window.location.pathname])
@@ -117,7 +118,7 @@ function App() {
       </div>
       <div className="hintsContainer">
       {player && cocktail ? (
-        cocktail.hints.slice(0, 6 - player.attempts).map((hint, index) => (
+        cocktail.listHints.slice(0, 6 - player.attempts).map((hint, index) => (
           <div key={index}>{hint}</div>
         ))
       ) : (
@@ -125,7 +126,13 @@ function App() {
       )}
       </div>
       <div className="cocktailWord">
-        {player ? (Array.isArray(player.hiddenCocktailName) ? player.hiddenCocktailName.join(' ') : player.hiddenCocktailName) : 'Loading...'}
+        {player ? (
+          player.hiddenCocktailName.map((char, index) => (
+            char === ' ' ? ' ' : char
+          )).join('')
+        ) : (
+          'Loading...'
+        )}
       </div>
       <div className="inputContainer">
         <input type="text" placeholder="Enter your answer" id="answerInput"/>
