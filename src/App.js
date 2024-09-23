@@ -1,5 +1,4 @@
 import './App.css';
-import PostAnswer from './PostAnswer.js';
 import { useState, useEffect } from 'react';
 
 function App() {
